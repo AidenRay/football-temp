@@ -2,6 +2,7 @@ import bme280
 from Adafruit_IO import Client, Data, MQTTClient
 import time
 import random
+import sys
 # Set to your Adafruit IO key & username below.
 ADAFRUIT_IO_KEY      = 'b12192c3b0d74edf98a2c0433fb508d6'
 ADAFRUIT_IO_USERNAME = 'aidenray'
@@ -14,7 +15,7 @@ def connected(client):
     # This is a good place to subscribe to feed changes.  The client parameter
     # passed to this function is the Adafruit IO MQTT client so you can make
     # calls against it easily.
-    print('Connected to Adafruit IO!  Listening for DemoFeed changes...')
+    print('Connected to Adafruit IO!  Listening for changes...')
     # Subscribe to changes on a feed named DemoFeed.
     client.subscribe('DemoFeed')
 
@@ -44,31 +45,31 @@ client.on_message    = message
 # Connect to the Adafruit IO server.
 client.connect()
 
-# Now the program needs to use a client loop function to ensure messages are
+#  use a client loop function to ensure messages are
 # sent and received.  There are a few options for driving the message loop,
 # depending on what your program needs to do.
 
-# The first option is to run a thread in the background so you can continue
+# run a thread in the background so you can continue
 # doing things in your program.
 client.loop_background()
 # Now send new values every 10 seconds.
-print('Publishing a new message every 10 seconds (press Ctrl-C to quit)...')
+print('Publishing a new message every 2 seconds (press Ctrl-C to quit)...')
 while True:
     temperature,pressure,humidity = bme280.readBME280All()
     board_temp = bme280.on_board_temp()
     
-    print('Publishing {0} to DemoFeed.'.format(temperature))
-    client.publish('bme-temp', temperature)
+    print('Publishing {0} to bme-temp feed.'.format(temperature))
+    client.publish('temperature', temperature)
     
-    print('Publishing {0} to DemoFeed.'.format(pressure))
-    client.publish('bme-pressure', pressure)
+    print('Publishing {0} to bme-pressure feed'.format(pressure))
+    client.publish('pressure', pressure)
     
-    print('Publishing {0} to DemoFeed.'.format(humidity))
-    client.publish('bme-humidity', humidity)
+    print('Publishing {0} to bme-humidity feed.'.format(humidity))
+    client.publish('humidity', humidity)
     
-    print('Publishing {0} to DemoFeed.'.format(board_temp))
-    client.publish('rpi-chip-temp', board_temp)
-    time.sleep(10)
+    print('Publishing {0} to rpi-chip-temp feed.'.format(board_temp))
+    client.publish('board temperature', board_temp)
+    time.sleep(8)
 
 
 #aio = Client(ADAFRUIT_IO_KEY)
