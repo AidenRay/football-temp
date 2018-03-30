@@ -1,3 +1,4 @@
+# GO TO: https://io.adafruit.com/aidenray/dashboards/football-temperature-monitor
 import bme280
 from Adafruit_IO import Client, Data, MQTTClient
 import time
@@ -69,7 +70,7 @@ while True:
     
     print('Publishing {0} to rpi-chip-temp feed.'.format(board_temp))
     client.publish('board temperature', board_temp)
-    time.sleep(8)
+    time.sleep(30)
 
 
 #aio = Client(ADAFRUIT_IO_KEY)
